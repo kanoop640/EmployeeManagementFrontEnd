@@ -1,12 +1,15 @@
 import React, { Component } from "react";
-
+import history from "../history";
 import { Input, Button, Card, Logo } from "../components/common";
+import axios from "axios";
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
       password: "",
+      isLoggedIn: false,
+      user: null,
     };
   }
   handleEmail = (event) => {
@@ -15,9 +18,28 @@ class Login extends Component {
   handlePassword = (event) => {
     this.setState({ password: event.target.value });
   };
+  Eventhandler = (email, password) => {
+    const url = "https://localhost:44346/api/Employee/LoginEmployee";
+    const login = axios.post(url + `?email=${email}&password=${password}`);
+    login
+      .then((user) => {
+        this.setState({ user: user.data });
+        this.setState({ isLoggedIn: true });
+        if (this.state.isLoggedIn) {
+          history.push("/home");
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        history.push("/error");
+      });
+  };
+
   render() {
+    const { email, password } = this.state;
+
     return (
-      <div className="container">
+      <div className="container ">
         <div
           style={{
             position: "absolute",
@@ -34,13 +56,19 @@ class Login extends Component {
               type="text"
               placeholder="Email"
               textChange={this.handleEmail}
+              value={email}
             />
             <Input
               type="password"
               placeholder="Password"
               textChange={this.handlePassword}
+              value={password}
             />
-            <Button title="Login" className="btn btn-primary w-100" />
+            <Button
+              title="Login"
+              className="btn btn-primary w-100"
+              onClick={() => this.Eventhandler(email, password)}
+            />
           </Card>
         </div>
       </div>
