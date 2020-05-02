@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import axios from "axios";
 import { Card, Button } from "../components/common";
+import { deleteEmployee, GetAllEmployee } from "../Services";
 
 class Home extends Component {
   constructor(props) {
@@ -10,45 +10,22 @@ class Home extends Component {
     };
   }
   componentDidMount() {
-    async function getUsers() {
-      try {
-        const response = await axios.get(
-          "https://localhost:44346//api/Employee/GetAllEmployee"
-        );
-        return response;
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getUsers().then((user) => {
+    GetAllEmployee().then((user) => {
       this.setState({ users: user.data });
     });
   }
-  deleteEmployee = (id) => {
-    const deleted = axios.delete(
-      "https://localhost:44346/api/Employee/DeleteEmployee?id=" + id
-    );
-    deleted
-      .then((u) => {
-        window.location.reload();
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
+
   render() {
     return (
       <div>
         <nav className="navbar navbar-inverse">
           <div className="container-fluid">
             <div className="navbar-header">
-              <a className="navbar-brand" href="#">
-                EmployeeManagement
-              </a>
+              <h3>EmployeeManagement</h3>
             </div>
             <ul className="nav navbar-nav">
               <li>
-                <a href="/">Login</a>
+                <a href="/">LogOut</a>
               </li>
               <li>
                 <a href="/register">Register</a>
@@ -65,7 +42,7 @@ class Home extends Component {
                   <p>Email: {user.email}</p>
                   <Button
                     title="Delete"
-                    onClick={() => this.deleteEmployee(user.id)}
+                    onClick={() => deleteEmployee(user.id)}
                   />
                 </Card>
               );

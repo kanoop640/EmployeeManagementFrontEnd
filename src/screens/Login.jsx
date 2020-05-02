@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import history from "../history";
+
 import { Input, Button, Card, Logo } from "../components/common";
-import axios from "axios";
+import { loginEventhandler } from "../Services";
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -18,26 +18,15 @@ class Login extends Component {
   handlePassword = (event) => {
     this.setState({ password: event.target.value });
   };
-  Eventhandler = (email, password) => {
-    const url = "https://localhost:44346/api/Employee/LoginEmployee";
-    const login = axios.post(url + `?email=${email}&password=${password}`);
-    login
-      .then((user) => {
-        this.setState({ user: user.data });
-        this.setState({ isLoggedIn: true });
-        if (this.state.isLoggedIn) {
-          history.push("/home");
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-        history.push("/error");
-      });
-  };
 
+  componentDidMount() {
+    if (this.state.user) {
+      this.props.history.push("/home");
+    }
+  }
   render() {
     const { email, password } = this.state;
-
+    console.log(this.props.history);
     return (
       <div className="container ">
         <div
@@ -67,7 +56,7 @@ class Login extends Component {
             <Button
               title="Login"
               className="btn btn-primary w-100"
-              onClick={() => this.Eventhandler(email, password)}
+              onClick={() => loginEventhandler(email, password)}
             />
           </Card>
         </div>

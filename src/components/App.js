@@ -3,17 +3,21 @@ import Login from "../screens/Login";
 import Register from "../screens/Register";
 import Home from "../screens/Home";
 import Error from "../screens/Error";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Update from "../screens/Update";
 import history from "../history";
-import { Router, Route } from "react-router-dom";
 class App extends Component {
   render() {
     return (
       <Router history={history}>
         <div>
-          <Route path="/" component={Login} exact />
-          <Route path="/home" component={Home} exact />
-          <Route path="/register" component={Register} exact />
-          <Route path="/error" component={Error} exact />
+          <Switch>
+            <Route path="/" component={Login} exact />
+            <Route path="/home" component={Home} exact />
+            <Route path="/register" component={Register} exact />
+            <Route path="/error" component={Error} exact />
+            <Route path="/update" component={Update} exact />
+          </Switch>
         </div>
       </Router>
     );

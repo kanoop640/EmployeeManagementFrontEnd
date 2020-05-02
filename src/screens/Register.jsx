@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Input, Card, Button } from "../components/common";
-import axios from "axios";
+import { registerEventHandler } from "../Services";
 
 class Register extends Component {
   constructor(props) {
@@ -23,18 +23,7 @@ class Register extends Component {
     this.setState({ password: "" });
     this.setState({ gender: "" });
   }
-  DataSend = (data) => {
-    const url = "https://localhost:44346/api/Employee/AddEmployee";
-    axios
-      .post(url, data)
-      .then((user) => {
-        console.log(user);
-        this.ClearData();
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
+
   render() {
     const data = {
       firstName: this.state.firstName,
@@ -104,7 +93,7 @@ class Register extends Component {
             <Button
               title="Register"
               className="btn btn-primary w-100"
-              onClick={() => this.DataSend(data)}
+              onClick={() => registerEventHandler(data)}
             />
           </Card>
         </div>
